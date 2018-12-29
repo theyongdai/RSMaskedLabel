@@ -71,8 +71,9 @@
     return _maskedTextEnabled;
 }
 
-- (void)drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)oldRect
 {
+    CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y, oldRect.size.width, oldRect.size.height);
     if (!self.isMaskedTextEnabled) {
         [self RS_drawBackgroundInRect:rect];
         [super drawRect:rect];
