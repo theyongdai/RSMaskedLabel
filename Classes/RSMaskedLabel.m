@@ -71,9 +71,8 @@
     return _maskedTextEnabled;
 }
 
-- (void)drawRect:(CGRect)oldRect
+- (void)drawRect:(CGRect)rect
 {
-    CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y, oldRect.size.width, oldRect.size.height);
     if (!self.isMaskedTextEnabled) {
         [self RS_drawBackgroundInRect:rect];
         [super drawRect:rect];
@@ -92,7 +91,7 @@
     // Revert to normal graphics context for the rest of the rendering
     context = UIGraphicsGetCurrentContext();
 
-    CGContextConcatCTM(context, CGAffineTransformMake(1, 0, 0, -1, 0, CGRectGetHeight(rect)));
+    CGContextConcatCTM(context, CGAffineTransformMake(1, 0, 0, -1, 0, CGRectGetHeight(rect) +(CGRectGetMinX(rect)*2.0f) ));
 
     // create a mask from the normally rendered text
     CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(image), CGImageGetHeight(image), CGImageGetBitsPerComponent(image), CGImageGetBitsPerPixel(image), CGImageGetBytesPerRow(image), CGImageGetDataProvider(image), CGImageGetDecode(image), CGImageGetShouldInterpolate(image));
@@ -124,8 +123,9 @@
     CFRelease(mask); mask = NULL;
 
     [self RS_drawBackgroundInRect:rect];
-
+    
     CGContextRestoreGState(context);
+    
 }
 
 - (void) RS_drawBackgroundInRect:(CGRect)rect
